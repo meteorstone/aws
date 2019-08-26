@@ -1,0 +1,140 @@
+# SAA-Networking-1
+
+- VPC  
+
+	- CIDR
+		- block size between /28 - /16 net mask
+		- private ip: 10.0.0.0 (/8 prefix) 172.16.0.0 (/12 prefix) 192.168.0.0 (/16 prefix)
+		- reserves 5 IPs in each subnet: first 4 and last 1
+	- route table
+		- route target could be Instance, Internet gateway, Nat gateway, Network interface, Peering connection, Transit gateway, Virtual private gateway
+	- public subnet
+		- has internet connectivity
+		- should be assigned public IP or elastic IP
+	- private subnet
+		- has no internet connectivity
+	- VPN-only subnet
+		- not connect to internet
+		- has traffic routed through virtual private gateway only
+	- Elastic IP
+		- associating with stopped instance will incur costs
+	- NACL
+		- apply on subnets
+		- specify either allow or deny rules for inbound or outbound
+		- A subnet can be assigned only 1 NACLs
+		- Lower number rules have higher priority
+		- executed immediately when a matching allow/deny rule is found.
+		- Stateless
+		- can be used to block incoming/outgoing IPs
+	- Security group
+		- apply on EC2 instances
+		- max 5 SGs and for each max 50 rules
+		- Stateful
+		- specify only allow rules but not deny rules
+	- VPC peering
+		- connection between 2 VPS by private IP
+		- can connect to another account’s VPC
+		- neither a gateway nor a VPN connection
+		- no single point failure or a bandwidth bottleneck
+		- CIDR blocks can not be overlapped
+		- support inter-region connection
+		- can not be transitive
+		- not support edge to edge routing through a gateway or private connection
+		- not have access to other connection
+		- only one connection can be established between 2 VPCs
+		- MTU is 1500 bytes
+		- public DNS does not resolve to private IP
+		- can be applied to create shared services
+	- VPC flow log
+		- monitoring traffic
+		- stored using CloudWatch logs or S3
+		- can cover entire VPC or each network interface
+	- Shared VPCs
+		- one account shares subnets with other accounts
+		- participants can operate applications in shared subnet
+- Gateway
+	- NAT gateway/NAT instance
+		- launched in public subnet
+		- assignment of elastic IP or public IP
+		- NAT gateway has better availability, higher bandwidth (up to 10Gbps burst) and less administrative effort
+		- NAT gateway is created in a specific AZ and implemented with redundancy in that AZ
+		- support TCP/UDP/ICMP
+		- NAT gateway when created is automatically assigned a private IP
+		- cannot send traffic over VPC endpoint, VPN connection, peering connection. private subnet should add modify route table to route the traffic to these devices
+		- do not support ipv6. The alternative is to user egress-only Internet gateway
+		- provide internet for subnet instead of VPC and still need IGW to internet
+		- NAT instances do not provide the same availability and bandwidth as NAT gateway, should configure SG properly, should have source destination check attribute disabled
+		- to achieve high availability, create one NAT instance per AZ and use auto scaling group per NAT instance with min/max set of 1
+	- Internet Gateway
+		- horizontally scaled, redundant, highly available
+		- no availability risk or bandwidth constrain
+		- virtual router that connects a VPC to the internet
+		- can only attach to one VPC
+		- one VPC can only have one IGW
+- VPC Endpoint (AWS PrivateLink)
+	- private connection from VPC instances to AWS services and VPC endpoint services using private IP
+	- endpoints are virtual devices that are horizontal scaled, redundant and highly available
+	- without availability risks or bandwidth constraints
+	- do not support cross-region request
+	- endpoint policy attached with IAM resource allows full access to service by default
+	- VPC Interface endpoint
+		- connectivity to services powered by AWS PrivateLink
+		- services include AWS services e.g. CloudTrail, CloudWatch etc., services hosted by AWS customers
+		- for each endpoint only one subnet per AZ can be selected
+		- each endpoint can support a bandwidth up to 10Gbps per AZ by default. Additional capacity may be added automatically based on usage
+		- NACl should be configured properly
+		- support TCP only
+		- support IPV4 only
+	- VPC Gateway endpoint
+		- support S3 and DynamoDB
+		- endpoint is associated with route table and route entry is automatically added
+		- modify security group to allow outbound traffic from VPC to the service by service prefix as destination
+		- multiple endpoints can be created either in a single VPC or for a single service
+		- support IPV4 only
+		- cannot be transferred from one VPC to another or from one service to another
+		- cannot be used in VPN connection, peering connection, direct connect connection
+	- VPC Endpoint service
+		- create a network load balancer
+- VPN
+	- AWS hardware VPN
+		- IPSec connection between VPC and remote network
+		- Virtual Private Gateway (VGW) on AWS side of the VPN connection
+		- Customer gateway (CGW) on customer side which is a physical device or software application
+	- AWS Direct Connect
+		- a dedicated private connection from a remote network to VPC
+		- can be combined with an AWS hardware VPN to create a IPSec-encrypted connection
+	- AWS VPN CloudHub
+		- for more than one remote network e.g. multiple branch offices
+		- convinient and low-cost
+	- VGW & CGW
+		- VGW is on the AWS side
+		- CGW is on the customer side
+		- VGW is not the initiator. CGW must initiate the tunnels. Connect customer network to a VPC
+		- VGW is attached to VPC
+		- traffic to remote should be routed to VGW
+		- VGW provides 2 VPN endpoint for automatic failover. so 2 tunnels are established
+		- refer to: [https://blog.gcp.expert/build-a-vpn-between-gcp-aws/](https://blog.gcp.expert/build-a-vpn-between-gcp-aws/)
+- Bastion
+	- act as a primary access point from the internet
+	- act as a proxy to private instances
+	- not store private key on bastion host
+	- tightened to allow SSH/RDP access from trusted IPs
+	- private instances accept SSH/RDP only from bastion host
+	- deploy in each AZ fro HA
+- launch VPC Wizard
+	- VPC with a single public subnet
+		- only one public subnet
+		- an internet gateway will be created
+	- VPC with public and private subnets
+		- two subnets
+		- bound main route table with private subnet and custom route table with public subnet
+		- an IGW will be created
+		- one NAT gateway (need an EIP) or NAT instance (can select instance type and key pair) will be created
+	- VPC with public and private subnets and hardware VPN access
+		- VPC should be configured
+		- no need to create NAT gateway/instance
+	- VPC with a private subnet only and hardware VPN access
+- 2-tier architecture
+	- public application and private database
+- 3-tier architecture
+	- public web server and private application an private database

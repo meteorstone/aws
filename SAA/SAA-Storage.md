@@ -1,0 +1,146 @@
+# SAA-Storage
+
+- S3
+	- key value object store; unlimited storage space
+	- can not be used to host OS or dynamic websites
+	- S3 resource are private by default
+	- S3 bucket name is globally unique regardless of region
+	- S3 data is flat in bucket without hierarchies
+	- 100 buckets can be create in each account. however object number is unlimited in one bucket
+	- listing objects returns max 1000 object keys
+	- Amazon S3 now provides increased performance to support at least 3,500 requests per second to add data and 5,500 requests per second to retrieve data. This S3 request rate performance increase removes any previous guidance to randomize object prefixes to achieve faster performance. That means you can now use logical or sequential naming patterns in S3 object naming without any performance implications
+	- object can be retrieved as a whole or partially
+	- mulitipart upload supports max 5TB size
+		- part size can be from 5MB to 5GB
+		- can begin upload before object size is known
+	- archived object must be restored before you access it
+	- Pre-signed URLs
+		- allow user to upload/download specific object without querying AWS security credentials permission
+		- creator provide his security credential
+		- valid only till the expiration time 
+		- visit bucket or object in path-style or virtual hosted-style URLs
+	- S3 storage classes
+		- automatic migration of objects for cost saving
+		- support SSL encryption of data in transit and data encryption at rest
+		- S3 Standard
+			- is the default storage class
+			- use cases: performance-sensitive, frequently accessed, sustain loss in 2 facilities
+			- low latency and high throughput performance
+			- durability of 11 nines, availability 4 nines
+		- S3 Intelligent-Tiering
+			- for long-lived data with known or changing access pattern
+			- automatically move data to the most cost-effective access tier without performance impact or operational overhead
+			- works by storing objects in 2 access tier: one is optimized for frequent access and another is lower-cost for infrequent access
+			- move objects not being accessed for 30 consecutive days to infrequent access tier
+			- when infrequent data is accessed, it is automatically moved back to the frequent access tier
+			- availability 3 nines
+			- small monthly monitoring and auto-tiering fee
+			- no retrieval fee
+		- Standard-IA
+			- use cases: long-lived and less frequently accessed data, e.g. backups and older data, where access is limited but still demands rapid access
+			- sustain loss in 2 facilities
+			- objects are available for real-time access
+			- suitable for object size larger than 128KB kept for at least 30 days
+			- durability of 11 nines, availability 3 nines
+			- extra retrieval fee
+		- S3 One Zone-IA
+			- long-lived and less frequently accessed data, but still demands rapid access
+			- stores data in a single AZ instead of 3 AZs
+			- low-cost for infrequent access but not requiring availability and resilience, e.g. secondary backup copies or easily re-created data
+			- can also be used as cost-effective storage for data that is replicated from another region using S3 cross-region replication
+			- extra retrieval fee
+		- S3 Glacier
+			- secure, durable, and low-cost for data long-term archiving
+			- provide 3 retrieval options ranging from minutes to hours
+			- can upload data directly to glacier or use s3 lifecycle policy to transfer data between storage classes
+			- you cannot upload archives to Glacier by using the management console. To upload data, such as photos, videos, and other documents, you must either use the AWS CLI or write code to make requests, by using either the REST API directly or by using the AWS SDKs.
+			- Provisioned capacity ensures that your retrieval capacity for expedited retrievals is available when you need it. Each unit of capacity provides that at least three expedited retrievals can be performed every five minutes and provides up to 150 MB/s of retrieval throughput
+		- S3 Glacier Deep Archive
+			- lowest-cost, long-term retention (7-10 years) and digital preservation for data that may be accessed once or twice in a year
+			- ideal alternative to magnetic tap libraries
+			- retrieval time within 12 hours
+			- an upload data directly to glacier deep archive or use s3 lifecycle policy to transfer data between storage classes
+		- referer: [https://aws.amazon.com/s3/storage-classes/?nc1=f\_ls](https://aws.amazon.com/s3/storage-classes/?nc1=f_ls)
+	- S3 lifecycle policy
+		- You can't transition from any storage class to the STANDARD storage class
+		- You can't transition from the INTELLIGENT\_TIERING storage class to the STANDARD\_IA storage class
+		- You can't transition from the ONEZONE\_IA storage class to the STANDARD\_IA or INTELLIGENT\_TIERING storage classes
+		- You can't transition from the DEEP\_ARCHIVE storage class to any other storage class.
+		- When you restore an archive, you are paying for both the archive (GLACIER or DEEP\_ARCHIVE rate) and a copy that you restored temporarily (REDUCED\_REDUNDANCY storage rate).
+		- Objects must be stored at least 30 days in the current storage class before you can transition them to STANDARD\_IA or ONEZONE\_IA.
+		-  refer to: [https://docs.aws.amazon.com/AmazonS3/latest/dev/lifecycle-transition-general-considerations.html](https://docs.aws.amazon.com/AmazonS3/latest/dev/lifecycle-transition-general-considerations.html)
+	- static website hosting
+		- An S3 bucket that is configured to host a static website. The bucket must have the same name as your domain or subdomain. For example, if you want to use the subdomain [portal.tutorialsdojo.com](http://portal.tutorialsdojo.com/), the name of the bucket must be [portal.tutorialsdojo.com](http://portal.tutorialsdojo.com/).
+	- The Amazon S3 notification feature enables you to receive notifications when certain events happen in your bucket. supports the following destinations where it can publish events: SNS, SQS, Lambda
+	- Amazon S3 Transfer Acceleration enables fast, easy, and secure transfer of files over long distances between your client and your Amazon S3 bucket. Transfer Acceleration leverages Amazon CloudFront's globally distributed AWS Edge Locations. As data arrives at an AWS Edge Location, data is routed to your Amazon S3 bucket over an optimized network path. 
+	- security
+		- resource based policies
+			- bucket polices
+			- access control list
+		- user polices
+			- IAM
+		- versioning
+		- encryption
+			- server side
+				- sse-s3
+				- see-kms
+				- sse-c
+			- client side
+				- kms managed customer master key
+				- client-side master key
+		- mfa deletion
+	- CORS
+- EBS
+	- EBS volumes are highly available and reliable block-level storage
+	- EBS volumes are replicated within an Availability Zone (AZ)
+	- well-suited for use as the primary storage for file systems, databases and also for random read/write, throughput-intensive applications
+	-  can be attached to instances in the same AZ; in case of outside of AZ, you can create a snapshot and restore the snapshot to a new volume there, e.g. datacenter migration, disaster recovery
+	- Volume type [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html)
+		- General Purpose SSD (gp2)
+			- use case: boot volumes, small and medium-size database, development and test environments
+			- a base performance of 3 IOPS/GiB from 100 IOPS and 16000 IOPS; burst to 3000 IOPS for extended period.
+		- Provisioned IOPS SSD (io1)
+			- use case: I/O-intensive database workloads such as MongoDB, Oracle, MySQL, and many others.
+			- up to 64000 IOPS and 1000MB/s of throughput
+			- The maximum ratio of provisioned IOPS to requested volume size (in GiB) is 50:1.
+		- Throughput Optimized HDD (st1)
+			- low-cost magnetic storage that focus on throughput
+			- use case: for large, sequential workloads, e.g. EMR, ETL, data warehouse, and log processing
+		- Cold HDD (sc1)
+			- low-cost for large, sequential, cold-data workloads
+	- Burst performance and I/O credits to handle occasional peak
+	- EBS Encryption [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html)
+		- use AWS KMS custom master key
+		- public or shared snapshot of encrypted volumes are not supported
+		- existing unencrypted volumes can not be encrypted directly but needs to be migrated
+		- by copying an EBS snapshot, you can encrypt a previously unencrypted snapshot, change the key with which the snapshot is encrypted, or, for encrypted snapshots that have been shared with you, create a copy that you own in order to restore a volume from it.
+		- encrypt data at rest
+	- EBS Snapshot [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html)
+		- stored in S3
+		- EBS snapshots occur asynchronously
+- Instance store + AMI
+	- suitable for temporary storage of information that changes frequently, such as buffers, caches, scratch datas
+	- instance store volume is not preserved in derived AMI
+- EFS
+	- refer to: [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEFS.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEFS.html)
+	- scalable file storage 
+	- not supported on windows instances
+	- SG should allow inbound port 2049 for NFS
+	- can be access across AZs, regions and VPCs
+	- well-suited for highly parallelized , scale-out workloads, concurrently-accessible storage
+- Storage gateway
+	- support protocols such as NFS, Samba, iSCSI, iSCSI-VTL
+	- connect to services such as S3, Glacier, Glacier Deep Archive, EBS, AWS Backup, 
+	- By default, all data stored by AWS Storage Gateway in S3 is encrypted server-side with Amazon S3-Managed Encryption Keys (SSE-S3).
+	- scalable and cost-effective
+	- File gateway
+		- connect S3 using NFS, SMB
+	- Volume gateway
+		- Gateway-cached volumes
+			- store primary data in S3
+			- retain frequently accessed data locally in cache
+		- Gateway-stored volumes
+			- store entire data set locally
+			- making an synchronous copy of your volume in S3 and point-in-time EBS snapshots
+	- Tape gateway
+		- present as iSCSi-VTL
