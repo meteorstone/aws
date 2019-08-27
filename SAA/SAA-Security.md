@@ -1,9 +1,27 @@
 # SAA-Security
 
+>security相关的概念主要是IAM和KMS，有些题目也比较容易混淆，在实践中容易忽略这部分，但是相对少的知识点却占16%的比重，可见重要性，总体难度在中等偏上
+
+## 知识点(中难)
+
+- IAM role
+  - 很多情况下IAM role都是合适的选择
+- IAM User & Group
+  - 和IAM role对比区分
+- Fedration
+  - 结合STS & SSO & SAML出现，一旦出现就属于比较难的题目
+- MFA
+  - 也是经常出现，出现时基本都是合适的选择
+- Encryption
+  - KMS经常出现
+  - 常和S3和EBS一起使用
+  - CloudHSM有时也作为选型出现，但基本都不选
+
+## 要点记录
+
 - IAM
 	- Identity and Access Management
 	- IAM roles are global service that are available to all regions
-	- [https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html](https://docs.aws.amazon.com/IAM/latest/UserGuide/id.html)
 	- grant unique security credentials to users and groups to specify which AWS service APIs and resources they can access
 	- IAM role
 		- a role does not have any credentials (password or access keys) associated with it
@@ -26,7 +44,6 @@
 		- Multi-Factor Authentication
 		- used in accessing to aws account; can also be used to control access to AWS service APIs
 	- IAM identity providers and federation
-		- [http://jayendrapatil.com/iam-role-identity-providers-federation/](http://jayendrapatil.com/iam-role-identity-providers-federation/)
 		- You can also integrate IAM policies and permissions with directories that you already manage
 			- Microsoft Active Directory
 			- AWS Directory Service
@@ -38,14 +55,12 @@
 		- An instance profile is a container for an IAM role that you can use to pass role information to an EC2 instance when the instance starts
 		- AWS creates a Instance profile automatically with the same name as the Role
 	- You can authenticate to your DB instance using AWS Identity and Access Management (IAM) database authentication. IAM database authentication works with MySQL and PostgreSQL. With this authentication method, you don't need to use a password when you connect to a DB instance. Instead, you use an authentication token
-	- Best Practices
-		- [https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
+	- [Best Practices](https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html)
 		- It's a best practice to grant least privilege for only the permissions required to perform a task
 		-   
 
 - Encryption
-	- KMS
-		- [https://docs.aws.amazon.com/kms/latest/developerguide/service-integration.html](https://docs.aws.amazon.com/kms/latest/developerguide/service-integration.html)
+	- [KMS](https://docs.aws.amazon.com/kms/latest/developerguide/service-integration.html)
 		- create and manage keys and control the use of encryption across AWS services
 		- integrate with CloudTrail to logging key using
 		- customer master keys (CMKs)

@@ -1,5 +1,31 @@
 # SAA-Storage
 
+>存储涉及的服务有：S3、EBS、EFS、Storaged Gateway等，其中S3和EBS最重要，简单题目居多，也是稍微难一点的
+
+## 知识点(易)
+
+- 存储选型
+  - 出现频次较高
+  - S3往往和Redshift、DynamoDB放在一起，作为非结构化数据的候选
+  - EBS主要是在SSD、HDD、Magnetic之间选择，常和EC2实例一起
+  - 存储容量限制、IOPS参数、availability、durability等参数是有必要记住的
+- S3的存储等级和生命周期
+  - 场景题中经常出现
+  - 多从可用性、访问频次、节省成本等角度来考察
+- EFS & Storage Gateway
+  - 经常一起出现，作为文件共享方案或者解决本地存储上云等场景问题
+  - 根据各自特点区分即可
+
+## 知识点(中)
+
+- encrytion
+  - 也是常见类型，常和KMS、IAM一起出现
+- backup & restore
+  - snapshot是存储领域最重要的概念之一
+  - 出现时往往中等偏难
+
+## 要点记录
+
 - S3
 	- key value object store; unlimited storage space
 	- can not be used to host OS or dynamic websites
@@ -60,7 +86,7 @@
 			- ideal alternative to magnetic tap libraries
 			- retrieval time within 12 hours
 			- an upload data directly to glacier deep archive or use s3 lifecycle policy to transfer data between storage classes
-		- referer: [https://aws.amazon.com/s3/storage-classes/?nc1=f\_ls](https://aws.amazon.com/s3/storage-classes/?nc1=f_ls)
+		- [referer to](https://aws.amazon.com/s3/storage-classes/?nc1=f_ls)
 	- S3 lifecycle policy
 		- You can't transition from any storage class to the STANDARD storage class
 		- You can't transition from the INTELLIGENT\_TIERING storage class to the STANDARD\_IA storage class
@@ -68,9 +94,9 @@
 		- You can't transition from the DEEP\_ARCHIVE storage class to any other storage class.
 		- When you restore an archive, you are paying for both the archive (GLACIER or DEEP\_ARCHIVE rate) and a copy that you restored temporarily (REDUCED\_REDUNDANCY storage rate).
 		- Objects must be stored at least 30 days in the current storage class before you can transition them to STANDARD\_IA or ONEZONE\_IA.
-		-  refer to: [https://docs.aws.amazon.com/AmazonS3/latest/dev/lifecycle-transition-general-considerations.html](https://docs.aws.amazon.com/AmazonS3/latest/dev/lifecycle-transition-general-considerations.html)
+		-  [refer to](https://docs.aws.amazon.com/AmazonS3/latest/dev/lifecycle-transition-general-considerations.html)
 	- static website hosting
-		- An S3 bucket that is configured to host a static website. The bucket must have the same name as your domain or subdomain. For example, if you want to use the subdomain [portal.tutorialsdojo.com](http://portal.tutorialsdojo.com/), the name of the bucket must be [portal.tutorialsdojo.com](http://portal.tutorialsdojo.com/).
+		- An S3 bucket that is configured to host a static website. The bucket must have the same name as your domain or subdomain. For example, if you want to use the subdomain portal.tutorialsdojo.com, the name of the bucket must be portal.tutorialsdojo.com.
 	- The Amazon S3 notification feature enables you to receive notifications when certain events happen in your bucket. supports the following destinations where it can publish events: SNS, SQS, Lambda
 	- Amazon S3 Transfer Acceleration enables fast, easy, and secure transfer of files over long distances between your client and your Amazon S3 bucket. Transfer Acceleration leverages Amazon CloudFront's globally distributed AWS Edge Locations. As data arrives at an AWS Edge Location, data is routed to your Amazon S3 bucket over an optimized network path. 
 	- security
@@ -95,7 +121,7 @@
 	- EBS volumes are replicated within an Availability Zone (AZ)
 	- well-suited for use as the primary storage for file systems, databases and also for random read/write, throughput-intensive applications
 	-  can be attached to instances in the same AZ; in case of outside of AZ, you can create a snapshot and restore the snapshot to a new volume there, e.g. datacenter migration, disaster recovery
-	- Volume type [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html)
+	- [Volume type](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSVolumeTypes.html)
 		- General Purpose SSD (gp2)
 			- use case: boot volumes, small and medium-size database, development and test environments
 			- a base performance of 3 IOPS/GiB from 100 IOPS and 16000 IOPS; burst to 3000 IOPS for extended period.
@@ -109,20 +135,20 @@
 		- Cold HDD (sc1)
 			- low-cost for large, sequential, cold-data workloads
 	- Burst performance and I/O credits to handle occasional peak
-	- EBS Encryption [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html)
+	- [EBS Encryption](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html)
 		- use AWS KMS custom master key
 		- public or shared snapshot of encrypted volumes are not supported
 		- existing unencrypted volumes can not be encrypted directly but needs to be migrated
 		- by copying an EBS snapshot, you can encrypt a previously unencrypted snapshot, change the key with which the snapshot is encrypted, or, for encrypted snapshots that have been shared with you, create a copy that you own in order to restore a volume from it.
 		- encrypt data at rest
-	- EBS Snapshot [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html)
+	- [EBS Snapshot](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSSnapshots.html)
 		- stored in S3
 		- EBS snapshots occur asynchronously
 - Instance store + AMI
 	- suitable for temporary storage of information that changes frequently, such as buffers, caches, scratch datas
 	- instance store volume is not preserved in derived AMI
 - EFS
-	- refer to: [https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEFS.html](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEFS.html)
+	- [refer to](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEFS.html)
 	- scalable file storage 
 	- not supported on windows instances
 	- SG should allow inbound port 2049 for NFS

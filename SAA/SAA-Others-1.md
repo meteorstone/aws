@@ -1,5 +1,22 @@
 # SAA-Others-1
 
+>其他零杂都服务列到这里，虽然零碎，但是基本都是必考，和其他不同的是，一个服务基本出现一个考点就差不多了，难度中等
+
+## 知识点(中)
+
+- CloudWatch & CloudTrail
+  - 首先要区分2者的应用场景
+  - 多和其他服务一起使用
+- SQS & SNS
+  - 最重要的结偶工具
+  - 注意分辨2者的区别
+- CloudFormation
+  - 常和SWF、Beanstalk一起出现
+- API Gateway
+  - 和Lambda一起
+
+## 要点记录
+
 - Cloud watch
 	- monitor AWS resources and applications in real-time
 	- collect and track metrics
