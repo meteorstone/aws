@@ -6,7 +6,7 @@ Section             | %
 --------------------| -----------------
 Design Resilient Architectures | 34%
 Define Performant Architectures | 24%
-Specify Secure Applications and Architectures | %16
+Specify Secure Applications and Architectures | %26
 Design Cost-Optimized Architectures | 10%
 Define Operationally Excellent Architectures | 6%
 
