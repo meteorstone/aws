@@ -45,16 +45,9 @@
 	- you can configure the message retention period to a value from 1 minute to 14 days
 - SNS
 	- suitable as a pub/sub messaging service instead of a message broker service
-- Amazon API Gateway
+- Amazon API Gatewavy
 	- integrate with Lambda
 	- provides throttling at multiple levels including global and by a service call
-- Lambda
-	-   
-
-- ECS
-	-   
-
-- Elastic Beanstalk
 - CloudFormation
 	- CloudFormation is a low level service and provides granular control to provision and manage stacks of AWS resources based on templates
 	- CloudFormation templates enables version control of the infrastructure and makes deployment of environments easy and repeatable
