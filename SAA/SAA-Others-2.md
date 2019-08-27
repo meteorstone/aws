@@ -1,5 +1,6 @@
 # SAA-Others-2
 
+>这些服务是在做题过程中出现的，了解这些服务有助于排除错误选型，对于SAA考试来说，做到了解接口，没有时间的可以不用深究，前面6个产品可重点了解下：MQ、Cognito、SWF、AWS Config、Athena、AWS WAF
 
 - MQ
 	- If you're using messaging with existing applications and want to move your messaging service to the cloud quickly and easily, it is recommended that you consider Amazon MQ
@@ -13,7 +14,6 @@
 	- build, run, and scale background jobs that have parallel or sequential steps.
 	- a fully-managed state tracker and task coordinator in the Cloud.
 	- use for creating a decoupled architecture
--   
 
 - AWS Config
 	- AWS Config reports on WHAT has changed

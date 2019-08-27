@@ -1,5 +1,24 @@
 # SAA-Networking-2
 
+>该部分主要涉及CloudFront、Rout53、ELB，其中CloudFront和ELB是最重要的几个服务，难度都在中等以上
+
+## 知识点(中+难)
+
+- CloudFront Origin & Edge
+  - 常和S3、EC2等一起使用
+- cache & expiration
+-distribution
+  - 常和Elasticache、EFS、Lambda、Rout53等放在一起考
+- security
+  - 和S3一起使用
+- route53主要了解alias和路由策略
+- ELB
+  - ALB和ELB是重点，CLB作为旧的服务，也会出现，原则是推荐使用新服务
+  - ALB使用非常广，几乎所有地方都可以插一脚进去，重点结合ASG和EC2来理解
+
+## 要点记录
+
+- VPC Interface Endpoint & VPC Gateway Endpoint
 - CloudFront
 	- an easy and cost effective way to distribute content with low latency and high data transfer speed
 	- route request to the edge location with best service
@@ -58,7 +77,7 @@
 		- OAI can be used to prevent direct accessing S3 objects; S3 bucket/object permissions need to be configured only provide access to OAI
 	- Objects can be updated by: overwriting origin; creating a different version and updating the link (recommended)
 	- CloudFront can be configured to create access log periodically
-- Lambda@Edge
+	- Lambda@Edge
 	- 
 - Route53
 	- a highly available and scalable DNS web service
@@ -80,8 +99,8 @@
 - ELB
 	- ALB
 		- works in layer 7 with HTTP/HTTPS/Websockets
-		- support for path-based routing, e.g. [example.com/order](http://example.com/order) [example.com/image](http://example.com/image) 
-		- support for host-based routing, e.g. [order.example.com](http://order.example.com/) [image.example.com](http://image.example.com/) 
+		- support for path-based routing, e.g. example.com/order example.com/image 
+		- support for host-based routing, e.g. order.example.com image.example.com
 		- support for routing to multiple services on a single instance with different ports, e.g. port 8001 for image and port 8002 for order; however one classic load balancer can only route to one service.
 		- support ECS by dynamic port map
 		- support for health check at target group level

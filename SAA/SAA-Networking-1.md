@@ -1,5 +1,36 @@
 # SAA-Networking-1
 
+>VPC相关的知识是网络部分的基础，题目相对比较简单，出现频率比较高，主要涉及到组网、安全、3层架构相关的知识。
+
+## 知识点(易)
+
+- public subnet & private subnet & EIP & route
+  - 基本就是考什么该放私网什么该放公网，私网内的服务需要外网怎么办，看清题，做起来比较简单
+- NACL & SG
+  - 这俩基本会在一起出现，看各自适用什么场景，怎么设置
+    - 出现频率较高
+- IG & NAT Gateway & NAT Instance & Bastion
+  - 这几个也经常一起出现，根据场景来选择，同时注意下high availability
+  - 出现频率较高
+- HA & DR
+  - 高可用和容灾也会考到
+  - 不用了解太深，要知道如何在网络层设计HA和DR
+
+## 知识点(中)
+
+- VPC Interface Endpoint & VPC Gateway Endpoint
+  - 这2个类型的endpoint也经常出现
+  - peering、direct connection、VPN会一起出现来干扰选择
+- VPN
+  - 会作为干扰出现，正面考的几率不大
+  - 了解Direct Connect、VGW、CGW相关概念即可
+- 3-tier Architecture
+  - 经常结合ALB、RDS在场景中出现
+  - 还会涉及到公网/私网、安全组等概念
+  - 对3层架构的理解要深入骨子里
+
+## 要点记录
+
 - VPC  
 
 	- CIDR
@@ -113,7 +144,7 @@
 		- VGW is attached to VPC
 		- traffic to remote should be routed to VGW
 		- VGW provides 2 VPN endpoint for automatic failover. so 2 tunnels are established
-		- refer to: [https://blog.gcp.expert/build-a-vpn-between-gcp-aws/](https://blog.gcp.expert/build-a-vpn-between-gcp-aws/)
+		- [refer to](https://blog.gcp.expert/build-a-vpn-between-gcp-aws/)
 - Bastion
 	- act as a primary access point from the internet
 	- act as a proxy to private instances

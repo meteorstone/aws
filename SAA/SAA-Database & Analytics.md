@@ -1,5 +1,38 @@
 # SAA-Database & Analytics
 
+>数据库是作为架构师最重要的能力之一，候选方案很多，依据不同场景来选择。主要涉及的服务有：RDS、DynamoDB、Elasticache、Redshift、Kinesis等
+
+## 知识点(易)
+
+- 数据库选择
+  - 这是常考的概念，有几个原则可以参考：根据数据类型来选（结构化&非结构化）、根据应用场景选（Transaction业务&Analytics业务）、根据扩展性和可用性来选（scalability&HA）、根据数据量来选、根据读写性能来选
+- HA & Repica & cross-region
+  - 常见题，比较容易
+
+## 知识点(中)
+
+- DynamoDB
+  - 数据库里面出现频率最高
+  - 由于是AWS自己的服务，很多场合下都被AWS推荐使用
+  - table & index & DAX最好也了解下
+- Aurora
+  - 同样是AWS自己的服务，被推荐使用
+  - 在和其他RDS一起出现的时候，aurora往往是优选
+- Elasticache
+  - 多数用在解决DB的读性能问题
+  - 常和replica一起出现
+- Redshift & Kinesis
+  - 数据分析场景下使用
+  - 多数情况下都作为干扰项出现
+  - 掌握要点即可
+
+## 知识点(难)
+
+- Backup & DR
+  - 备份和容灾偶尔会出现，比较难一些
+
+## 要点记录
+
 - RDS
 	- Aurora, Mysql, MariaDb, PostgresSQL, Oracle, SQL Server
 	- RDS storage use EBS volume for database and log storage and automatically strips across multiple EBS volumes to enhance performance depending on required storage amount
@@ -22,7 +55,7 @@
 	- encryption at rest using KMS keys; support SSL encryption in transit
 	- RDS provides CloudWatch metrics; can notify events through SNS; integrate with AWS Config to audit configuration changes
 	- When you delete a DB instance, all automated backups are deleted and cannot be recovered. Manual DB snapshots of the instance are not deleted.
-	- Best practices：[https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER\_Recommendations.html](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_Recommendations.html)
+	- [Best practices](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_Recommendations.html)
 - Aurora
 	- simplicity and cost-effectiveness
 	- auto-scales up to 64TB per db instance
@@ -62,8 +95,7 @@
 		- on-demand: pay per request
 		- provisioned (default): you specify max request rate for predictable traffic or control cost; if provisioned capacity is exceeded, requests above capacity will be throttled and failed with a HTTP 400 code
 		- write unit is 1KB and read unit is 4KB
-	- Best practice
-		- [https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html)
+	- [Best practice](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html)
 		- keep item small size
 		- store metadata in DynamoDB and large BLOBs in S3
 		- use table per day, week, month etc for storing timing series data

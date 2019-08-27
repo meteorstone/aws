@@ -1,5 +1,27 @@
 # SAA-Compute
 
+>该部分主要涉及EC2、ECS、Lambda、Auto Scaling、Beanstalk等概念，占比较大，对阅读理解考验比较大，题目很多模棱两可的，所以比较容易出错，难度就划成中等吧
+
+## 知识点(中+难)
+
+- CE2 purchase type
+  - 几种实例类型要掌握好，根据关键词选择spot、reserved、scheduled类型
+  - 本来题目是不难，但是很容易一选就错，最主要还是做题人理解的和出题人考察的点没对上
+- Instance lifecycle & cost
+  - 偶尔会出现，频率不高，只要记住关键点，题目不难
+- Auto scaling
+  - 常和ELB一起使用，要重点掌握
+  - scaling的策略也经常考到
+- Lambda
+  - SAA也比较喜欢考Lambda相关的题
+  - 常和API Gateway一起用
+  - 和ALB、ECS等方案一起出现时，往往比较难
+- Beanstalk
+  - 常和SWF、ECS等一起出现，考察点比较单一，了解后并不难
+- ECS
+  - ECS往往有比较明显的提示词，比如container、docker等，比较容易排除错项目
+
+## 要点记录
 - EC2
 	- Purchase type
 		- On-demand instances
@@ -7,7 +29,7 @@
 		- Reserved instances
 			- available, for a term from one to three years
 		- scheduled instances
-			- available on the specified recurring schedule, for a one-year term.
+            - available on the specified recurring schedule, for a one-year term.
 			- Charges are incurred for the time that the instances are scheduled, even if they are not used
 			- for workloads that do not run continuously, but do run on a regular schedule for e.g. weekly or monthly batch jobs
 		- Spot instances
